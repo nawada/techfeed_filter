@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<title>options</title>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <p>
+    <fieldset>
+      <legend>
+        <label for="exclude-urls">除外リストURL:</label>
+      </legend>
+      <textarea id="exclude-urls" placeholder="1行1つ記述してください. 正規表現可" rows="5" cols="75"></textarea>
+    </fieldset>
+  </p>
+  <p>
+    <fieldset>
+      <legend>
+        <label for="exclude-titles">除外リストタイトル:</label>
+      </legend>
+      <textarea id="exclude-titles" placeholder="1行1つ記述してください. 正規表現可" rows="5" cols="75"></textarea>
+    </fieldset>
+  </p>
+  <p>
+    <fieldset>
+      <label>どちらにも一致する場合に除外する: <input type="checkbox" id="exclude-with-both" checked></label>
+    </fieldset>
+  </p>
+  <p>
+    <button id="save">保存</button>
+  </p>
+  <script src="./js/option.js"></script>
+</body>
+
+</html>

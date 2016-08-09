@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+
+  "name": "TechFeed Filter",
+  "version": "0.1",
+
+  "description": "TechFeedで表示する項目をフィルタリングできます。",
+
+  "author": "N.Wada",
+
+  "content_scripts": [{
+    "matches": ["https://techfeed.io/*", "http://techfeed.io/*"],
+    "js": ["js/filter.js"]
+  }],
+
+  "options_page": "option.html",
+
+  "permissions": [
+    "tabs",
+    "storage",
+    "https://techfeed.io/*"
+  ]
+}
