@@ -4,6 +4,7 @@ TechFeedFilter = function (urls, titles, excludeWithBoth) {
   this.excludeWithBoth = excludeWithBoth;
   this.URL_ELEMENT_SELECTOR = '.entry-origin a';
   this.TITLE_ELEMENT_SELECTOR = 'h2.entry-title a';
+  this.REGEXP_OPTIONS = 'i';
 };
 
 TechFeedFilter.prototype.execute = function () {
@@ -22,7 +23,6 @@ TechFeedFilter.prototype.execute = function () {
  * @private
  */
 TechFeedFilter.prototype._filteringUrlsAndTitles = function (elements) {
-  console.log(this._notExistArrayValue(this.blackListUrls), this._notExistArrayValue(this.blackListTitles));
   if (this._notExistArrayValue(this.blackListUrls) || this._notExistArrayValue(this.blackListTitles)) return;
 
   var urlElements = elements.url, that = this;
@@ -31,7 +31,7 @@ TechFeedFilter.prototype._filteringUrlsAndTitles = function (elements) {
     while (!element.classList.contains('has-full-entry')) element = element.parentNode;
     var titleElement = element.querySelector(that.TITLE_ELEMENT_SELECTOR);
     for (var i = 0; i < that.blackListTitles.length; i++) {
-      if (new RegExp(that.blackListTitles[i]).test(titleElement.textContent)) element.parentNode.removeChild(element);
+      if (new RegExp(that.blackListTitles[i], that.REGEXP_OPTIONS).test(titleElement.textContent)) element.parentNode.removeChild(element);
     }
   });
 };
@@ -92,10 +92,11 @@ TechFeedFilter.prototype._getElements = function () {
  */
 TechFeedFilter.prototype._getElementsWithSelector = function (elements, selector) {
   elements = elements || [];
-  return Array.prototype.filter.call(elements, function (element) {
-    if (element.querySelectorAll('.ad-mark').length > 0) return null;
+  var selected_elements = Array.prototype.map.call(elements, function(element) {
+    if(element.querySelector('.ad-mark')) return null;
     return element.querySelector(selector);
   });
+  return selected_elements.filter(function(element) { return element; });
 };
 
 /**
@@ -106,9 +107,10 @@ TechFeedFilter.prototype._getElementsWithSelector = function (elements, selector
  * @private
  */
 TechFeedFilter.prototype._filterElements = function (elements, filters) {
+  var that = this;
   return Array.prototype.filter.call(elements, function (element) {
     for (var i = 0; i < filters.length; i++) {
-      if (new RegExp(filters[i]).test(element.textContent) === false) continue;
+      if (new RegExp(filters[i], that.REGEXP_OPTIONS).test(element.textContent) === false) continue;
       return true;
     }
     return false;
